@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Estabilidade direcional estática</title>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
+  TeX: { equationNumbers: { autoNumber: 'all' } }
+});
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<style>
+body > * {
+  max-width: 42em;
+}
+body {
+  font-family: "Roboto Condensed", sans-serif;
+  padding-left: 7.5em;
+  padding-right: 7.5em;
+}
+pre, code {
+  max-width: 50em;
+  font-family: monospace;
+}
+pre.oct-code {
+  border: 1px solid Grey;
+  padding: 5px;
+}
+pre.oct-code-output {
+  margin-left: 2em;
+}
+span.comment {
+  color: ForestGreen;
+}
+span.keyword {
+  color: Blue;
+}
+span.string {
+  color: DarkOrchid;
+}
+footer {
+  margin-top: 2em;
+  font-size: 80%;
+}
+a, a:visited {
+  color: Blue;
+}
+h2 {
+  font-family: "Roboto Condensed", serif;
+  margin-top: 1.5em;
+}
+h2 a, h2 a:visited {
+  color: Black;
+}
+</style>
+
+</head>
+<body>
+<h1> Estabilidade direcional estática</h1>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#node1">Dados fornecidos na entrada</a></li>
+<li><a href="#node2">Calculo da contribuição do conjunto asa-fuselagem</a></li>
+<li><a href="#node3">Calculo da contribuição da superfície vertical da empenagem</a></li>
+<li><a href="#node4">Exibindo o resultado das contribuições</a></li>
+<li><a href="#node5">Exibindo resultado geral </a></li>
+<li><a href="#node6">Controle direcional </a></li>
+</ul>
+
+<p>A estabilidade direcional estática pode ser realizada pelo cálculo da variação do coeficiente de momento em torno do CG. Neste programa, tal variação será calculada pela contribuição do conjunto asa-fuselagem tanto quanto pela contribuicao da superfície vertical da empenagem.<p>
+
+<h2><a id="node1">Dados fornecidos na entrada</a></h2>
+<pre class="oct-code"><span class="comment">#   %DADOS NECESSARIOS:</span>
+<span class="comment">#   k_n = str2num (dims{1}); %Fator de interferencia asa-fuselagem</span>
+<span class="comment">#   k_rl = str2num (dims{2}); %Fator empirico (funcao direta do </span>
+<span class="comment">#   numero de Reynolds da fuselagem)</span>
+<span class="comment">#   S_f = str2num (dims{3}); %Area projetada lateral da fuselagem</span>
+<span class="comment">#   l_f = str2num (dims{4}); %Comprimento da fuselagem</span>
+<span class="comment">#   S_w = str2num (dims{5}); %Area da asa</span>
+<span class="comment">#   b = str2num (dims{6}); %Envergadura da asa</span>
+<span class="comment">#   			</span>
+<span class="comment">#   %Contribuicao da superfi­cie vertical da empenagem na </span>
+<span class="comment">#   estabilidade direcional estatica</span>
+<span class="comment">#   S_v = str2num (dims{7}); % superficie vertical de empenagem</span>
+<span class="comment">#   C_Lalphav = str2num (dims{8}); % coeficiente angular da superfi­cie vertical da empenagem</span>
+<span class="comment">#   V_v = str2num (dims{9}); % volume de cauda vertical</span>
+<span class="comment">#   Delta = str2num (dims{10}); %enflechamento da asa (25% da asa)</span>
+<span class="comment">#   Z_w = str2num (dims{11}); % distancia do nariz ate a linha de centro da fuselagem</span>
+<span class="comment">#   d_F = str2num (dims{12}); % profundidade maxima da fuselagem</span>
+<span class="comment">#   AR_w = str2num (dims{13}); %razao de aspecto da asa</span>
+</pre>
+<h2><a id="node2">Calculo da contribuição do conjunto asa-fuselagem</a></h2>
+<pre class="oct-code"><span class="comment">#   %Contribuicao do conjunto asa-fuselagem </span>
+<span class="comment">#   </span>
+<span class="comment">#   C_nbetawf = -k_n * k_rl * (S_f * l_f)/(S_w * b)</span>
+</pre>
+<h2><a id="node3">Calculo da contribuição da superfície vertical da empenagem</a></h2>
+<pre class="oct-code"><span class="comment">#   %Calculo contribuicao da superfi­cie vertical da</span>
+<span class="comment">#   empenagem na estabilidade direcional </span>
+<span class="comment">#   </span>
+<span class="comment">#   C_nbetav = V_v * C_Lalphav * (0.724+3.06*((S_v/S_w))/(1+cos(Delta))+ 0.4 * </span>
+<span class="comment">#   (Z_w/d_F) + 0.009 * AR_w)</span>
+</pre>
+<h2><a id="node4">Exibindo o resultado das contribuições</a></h2>
+<pre class="oct-code"><span class="comment">#   helpdlg (sprintf('Contribuicao da superficie vertical da</span> 
+<span class="comment">#   empenagem: O coeficiente angular da curva de momento de guinada em relacao ao </span> 
+<span class="comment">#   angulo de derrapagem e de %.3f\n',C_nbetav),...</span>
+<span class="comment">#   'Contribuicao da superficie vertical da empenagem na estabilidade direcional');</span>
+<span class="comment"># </span>
+<span class="comment">#   helpdlg (sprintf('Contribuicao da superficie vertical da empenagem: O </span>
+<span class="comment">#   coeficiente angular da curva de</span> 
+<span class="comment">#   momento de guinada em relacao ao angulo de derrapagem e de %.3f\n',C_nbetav),...</span>
+<span class="comment">#   'Contribuicao da superficie vertical da empenagem na estabilidade direcional');</span>
+</pre>
+<h2><a id="node5">Exibindo o resultado geral</a></h2>
+<pre class="oct-code"><span class="comment">#   beta_vetor = [-pi:pi];
+<span class="comment">#   eta_v = str2num (dims{14}); %eficiencia da superfi­cie vertical de empenagem</span> 
+<span class="comment">#   </span> 
+<span class="comment">#   C_nbeta = C_nbetawf + C_nbetav</span> 
+<span class="comment">#   </span> 
+<span class="comment">#   if C_nbeta > 0 </span> 
+<span class="comment">#      plot(beta_vetor,C_nbeta.*beta_vetor,'r-','Linewidth',3);</span> 
+<span class="comment">#       legend('C_{n\beta}>0')</span> 
+<span class="comment">#       helpdlg (sprintf('O aviao esta direcionalmente estavel.\n'),</span> 
+<span class="comment">#       "Estabilidade Direcional");</span> 
+<span class="comment">#   else</span> 
+<span class="comment">#       plot(beta_vetor,C_nbeta.*beta_vetor,'b-','Linewidth',3);</span> 
+<span class="comment">#       legend('C_{n\beta}<0')</span> 
+<span class="comment">#   helpdlg (sprintf('O aviao nao esta direcionalmente </span> 
+<span class="comment">#   instavel.\n'),"Estabilidade Direcional");</span> 
+<span class="comment">#   end</span> 
+<span class="comment">#   </span> 
+<span class="comment">#   grid on</span> 
+<span class="comment">#   xlabel('Angulo de derrapagem (\beta) (rad)');</span> 
+<span class="comment">#   ylabel('Contribuicao da superfi­cie de empanagem (C_{n})');</span> 
+<span class="comment">#   title('Condicao para garantir a estabilidade direcional estatica')</span> 
+</pre>
+<h2><a id="node6">Controle direcional</a></h2>
+<pre class="oct-code"><span class="comment">#   %Controle Direcional</span> 
+<span class="comment">#   </span> 
+<span class="comment">#   tau = str2num (dims{15}); %eficiencia de deflexao do leme</span> 
+<span class="comment">#   </span> 
+<span class="comment">#   %Coeficiente de momento de guinadado em relacao ao angulo de deflexao do leme</span> 
+<span class="comment">#   </span> 
+<span class="comment">#   C_ndeltar = (-eta_v) * V_v * C_Lalphav * tau;</span> 
+<span class="comment">#   </span> 
+<span class="comment">#   helpdlg (sprintf('O coeficiente de momento de guinadado em relacao ao angulo</span> 
+<span class="comment">#   de deflexao do leme e de %.3f.\n',C_ndeltar),...</span> 
+<span class="comment">#   'Controle Direcional');</span> 
+</pre>
+<footer>
+<hr>
+<a href="https://www.octave.org">Published with GNU Octave 5.2.0</a>
+</footer>
+<!--
+##### SOURCE BEGIN #####
+## Estabilidade direcional estática
+
+##
+# A estabilidade direcional estática pode ser realizada pelo cálculo da variação do coeficiente de momento
+# em torno do CG. Neste programa, tal variação será calculada pela contribuição do conjunto asa-fuselagem 
+# tanto quanto pela contribuicao da superfície vertical da empenagem.
+
+## Dados fornecidos na entrada
+
+#   %DADOS NECESSARIOS:
+#   k_n = str2num (dims{1}); %Fator de interferencia asa-fuselagem
+#   k_rl = str2num (dims{2}); %Fator empirico (funcao direta do 
+#   numero de Reynolds da fuselagem)
+#   S_f = str2num (dims{3}); %Area projetada lateral da fuselagem
+#   l_f = str2num (dims{4}); %Comprimento da fuselagem
+#   S_w = str2num (dims{5}); %Area da asa
+#   b = str2num (dims{6}); %Envergadura da asa
+#   			
+#   %Contribuicao da superfi­cie vertical da empenagem na 
+#   estabilidade direcional estatica
+#   S_v = str2num (dims{7}); % superficie vertical de empenagem
+#   C_Lalphav = str2num (dims{8}); % coeficiente angular da superfi­cie vertical da empenagem
+#   V_v = str2num (dims{9}); % volume de cauda vertical
+#   Delta = str2num (dims{10}); %enflechamento da asa (25% da asa)
+#   Z_w = str2num (dims{11}); % distancia do nariz ate a linha de centro da fuselagem
+#   d_F = str2num (dims{12}); % profundidade maxima da fuselagem
+#   AR_w = str2num (dims{13}); %razao de aspecto da asa
+
+## Calculo da contribuição do conjunto asa-fuselagem
+
+#   %Contribuicao do conjunto asa-fuselagem 
+#   
+#   C_nbetawf = -k_n * k_rl * (S_f * l_f)/(S_w * b)
+
+## Calculo da contribuição da superfície vertical da empenagem 
+
+#   %Calculo contribuicao da superfi­cie vertical da
+#   empenagem na estabilidade direcional 
+#   
+#   C_nbetav = V_v * C_Lalphav * (0.724+3.06*((S_v/S_w))/(1+cos(Delta))+ 0.4 * 
+#   (Z_w/d_F) + 0.009 * AR_w)
+
+## Exibindo o resultado das contribuições
+
+#   helpdlg (sprintf('Contribuicao da superficie vertical da 
+#   empenagem: O coeficiente angular da curva de momento de guinada em relacao ao  
+#   angulo de derrapagem e de %.3f\n',C_nbetav),...
+#   'Contribuicao da superficie vertical da empenagem na estabilidade direcional');
+# 
+#   helpdlg (sprintf('Contribuicao da superficie vertical da empenagem: O 
+#   coeficiente angular da curva de 
+#   momento de guinada em relacao ao angulo de derrapagem e de %.3f\n',C_nbetav),...
+#   'Contribuicao da superficie vertical da empenagem na estabilidade direcional');
+
+## Exibindo o resultado geral
+
+#   beta_vetor = [-pi:pi];
+#   eta_v = str2num (dims{14}); %eficiencia da superfi­cie vertical de empenagem 
+#    
+#   C_nbeta = C_nbetawf + C_nbetav 
+#    
+#   if C_nbeta > 0  
+#      plot(beta_vetor,C_nbeta.*beta_vetor,'r-','Linewidth',3); 
+#       legend('C_{n\beta}>0') 
+#       helpdlg (sprintf('O aviao esta direcionalmente estavel.\n'), 
+#       "Estabilidade Direcional"); 
+#   else 
+#       plot(beta_vetor,C_nbeta.*beta_vetor,'b-','Linewidth',3); 
+#       legend('C_{n\beta}<0') 
+#   helpdlg (sprintf('O aviao nao esta direcionalmente  
+#   instavel.\n'),"Estabilidade Direcional"); 
+#   end 
+#    
+#   grid on 
+#   xlabel('Angulo de derrapagem (\beta) (rad)'); 
+#   ylabel('Contribuicao da superfi­cie de empanagem (C_{n})'); 
+#   title('Condicao para garantir a estabilidade direcional estatica') 
+
+## Controle direcional
+#   %Controle Direcional 
+#    
+#   tau = str2num (dims{15}); %eficiencia de deflexao do leme 
+#    
+#   %Coeficiente de momento de guinadado em relacao ao angulo de deflexao do leme 
+#    
+#   C_ndeltar = (-eta_v) * V_v * C_Lalphav * tau; 
+#    
+#   helpdlg (sprintf('O coeficiente de momento de guinadado em relacao ao angulo 
+#   de deflexao do leme e de %.3f.\n',C_ndeltar),... 
+#   'Controle Direcional'); 
+##### SOURCE END #####
+-->
+</body>
+</html>

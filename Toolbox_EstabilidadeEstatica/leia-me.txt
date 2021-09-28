@@ -1,0 +1,308 @@
+%=======================================================================================================================================%
+Toolbox: Estabilidade de VANTS de asa-fixa
+
+Descrição:
+Esta Toolbox foi desenvida para o PDPD ITI  - Edital 04/20 e para a o time de projeto Atom Aircraft Systems, pertencente ao capítulo
+AESS da IEEE UFABC. O detalhamento de cada código pode ser observado no guia abaixo.
+
+%=======================================================================================================================================%
+CÓDIGOS
+%=======================================================================================================================================%
+Main.m
+
+Descrição:
+Corpo principal da toolbox, execute ele via janela de comandos do Octave ou ao clicar nele com o botão direito do mouse afim de abrir 
+uma seleção com todos os outros programas desenvolvidos.
+
+Entradas necessárias:
+-
+Saidas:
+Execução do programa escolhido
+
+CUIDADOS:
+Executar apenas um programa de cada vez.
+
+%=======================================================================================================================================%
+CG.m
+
+Descrição:
+Destinado ao cálculo da posição do centro de gravidade e de seu percentual em relação à corda média da asa.
+
+Entradas necessárias:
+● Córda média da asa (c) 				[metros]	Número
+● Posição do bordo de ataque (ba)			[metros]	Número
+● Peso dos componentes (P)				[Newtons]	Lista
+● Distância dos componentes (D) 			[metros]	Lista
+
+Saidas:
+● Posição do centro de gravidade(Xcg)			[metros]	número
+● Percentual posição do CG em função corda média	adimensional	número
+
+CUIDADOS:
+Verifique a separação dos elementos da lista.
+Cuidado com o sistema de unidades.
+
+%=======================================================================================================================================%
+ContEmpenagem.m
+
+Descrição:
+Destinado ao cálculo da contribuição da empenagem para a estabilidade longitudinal estática.
+
+Entradas necessárias:
+● Razão de aspecto da asa (AR)				adimensional	Número
+● Razão de aspecto do estabilizador (ARt)		adimensional	Número
+● Fator de eficiencia da envengadura da asa (e)		adimensional	Número
+● Fator de eficiencia da envengadura da empenagem (et)	adimensional	Número
+● Coeficiente angular da curva cl por alfa do perfil
+  do estabilizador (a0t)				[1 / grau]	Número
+● Área da asa (Sw)					[m^2]		Número
+● Área do estabilizador (St)				[m^2]		Número
+● Ângulo de incidencia da asa (iw)			[graus]		Número	
+● Ângulo de incidencia do estabilizador (it)		[graus]		Número	
+● Eficiência da cauda (eta) 				adimensional	Número
+● Volume de cauda horizontal (Vh)			adimensional	Número
+● Coeficiente de sustentacao para angulo		adimensional	Número 
+  de ataque nulo (Cl0)
+● Variacao do coeficiente de sustentacao de acordo	[1 / grau]	Número 
+  com angulo de ataque (Clalphaw) 
+● Valores possiveis para o angulo de ataque (alpha)	[graus]		Lista
+
+Saidas:
+● Coeficiente de momento em torno do CG gerado		[1 / grau]	Número 
+  pela empenagem a ângulo de ataque 0 (CM0t)
+● Variação do coeficiente de momento em torno do	adimensional	Número 
+  CG gerado pela empenagem de acordo com ângulo de
+  ataque (CMalphat)
+● Gráfico Coeficiente de momento em torno do CG		adimensional	Gráfico
+  gerado pela empenagem x ângulo de ataque (CMt)
+
+CUIDADOS:
+Verifique a separação dos elementos da lista.
+Cuidado com o sistema de unidades.
+
+%=======================================================================================================================================%
+ContAsa.m
+
+Descrição:
+Destinado ao cálculo da contribuição da asa para a estabilidade longitudinal estática.
+
+Entradas necessárias:
+● Razão de aspecto da asa (AR)				adimensional	Número
+● Fator de eficiencia da envengadura da asa (e)		adimensional	Número
+● Coeficiente angular da curva cl por alfa do perfil	[1 / grau]	Número
+  da asa (a0w)
+● Corda média da asa (c) 				[m]		Número
+● Distância enre CG e bordo de ataque (hcg)		[m]		Número
+● Distância enre centro aerodinâmico			[m]		Número
+  da asa e bordo de ataque (hac)
+● Ângulo de ataque para sustentacao nula (alpha0)	[grau]		Número
+● Coeficiente de momento em torno do centro 		adimensional	Número
+  aerodinamico a angulo de ataque nulo (CMac)
+● Valores possiveis para o angulo de ataque (alpha)	[graus]		Lista
+
+Saidas:
+● Coeficiente de momento em torno do CG gerado		[1 / grau]	Número 
+  pela asa a ângulo de ataque 0 (CM0w)
+● Variação do coeficiente de momento em torno do	adimensional	Número 
+  CG gerado pela asa de acordo com ângulo de
+  ataque (CMalphaw)
+● Gráfico Coeficiente de momento em torno do CG		adimensional	Gráfico
+  gerado pela asa x ângulo de ataque (CMw)
+
+CUIDADOS:
+Verifique a separação dos elementos da lista.
+Cuidado com o sistema de unidades.
+
+%=======================================================================================================================================%
+ContFuselagem.m
+
+Descrição:
+Destinado ao cálculo da contribuição da fuselagem para a estabilidade longitudinal estática.
+
+Entradas necessárias:
+
+● Fator de correção K2-K1				adimensional	Número	
+● Corda média da asa (c) 				[m]		Número
+● Área da asa (Sw)					[m^2]		Número
+● Ângulo de incidência da fuselagem (if)		[graus]		Número	
+● Largura média da fuselagem (wf)			[m]		Número	
+● Ângulo para sustentação nula da asa em		[graus]		Número	
+  relação a linha da fuselagem (alpha0w)
+● Valores possiveis para o angulo de ataque (alpha)	[graus]		Lista
+● Variacao do Vento relativo de acordo 			[1 / grau]	Número 
+  com angulo de ataque (EpsilonAlpha)
+
+As seguintes entradas devem ser geradas a partir de uma referência (Ver CAP 5 rodrigues):
+
+● Número total de Seções Analisadas (Sec)		adimensional	Número	
+● Seção(ões) da aeronave onde esta localizada 		adimensional	Lista
+  a asa (Secasa)
+● Seção da aeronave onde há o fim do nariz (secnariz)	adimensional	Número	
+● Incremento de comprimento (DeltaX) 			[m]		Lista
+● Comprimento da fuselagem (lf)				[m]		Número	
+● Máxima largura da fuselagem (dmax)			[m]		Número	
+
+Saidas:
+● Coeficiente de momento em torno do CG gerado		[grau ^ (-1)]	Número 
+  pela fuselagem a ângulo de ataque 0 (CM0f)
+● Variação do coeficiente de momento em torno do	adimensional	Número 
+  CG gerado pela fuselagem de acordo com ângulo de
+  ataque (CMalphaf)
+● Gráfico Coeficiente de momento em torno do CG		adimensional	Gráfico
+  gerado pela fuselagem x ângulo de ataque (CMf)
+
+CUIDADOS:
+Verifique a separação dos elementos da lista.
+Cuidado com o sistema de unidades.
+Verifique o desenho de referência.
+Cuidado com a quantidade de números de cada lista.
+
+%=======================================================================================================================================%
+Direcional.m
+
+Descrição:
+Destinado ao cálculo da estabilidade direcional estática.
+
+Entradas necessárias:
+
+● Fator de interferencia asa-fuselagem (Kn)		adimensional	Número	
+● Fator empirico (Krl)					adimensional	Número	
+● Área projetada lateral da fuselagem (Sf)		[m^2]		Número
+● Comprimento da fuselagem (lf)				[graus]		Número	
+● Largura média da fuselagem (wf)			[m]		Número	
+● Área da asa (Sw)					[m^2]		Número
+● Envergadura da asa (b)				[m]		Número	
+● Área da superficie vertical de empenagem (Sv)		[m^2]		Número
+● Coeficiente angular da curva Cl x Alpha		[1/grau]	Número
+  da superfície vertical da empenagem
+● Volume de cauda vertical (Vv)				adimensional	Número					
+● Enflechamento da asa para 25% da asa (Delta)		[grau]		Número
+● Distância do nariz ate a linha de centro da 		[m]		Número	
+  fuselagem (Zw)
+● Profundidade máxima da fuselagem (dF)			[m]		Número	
+● Razão de aspecto da asa (ARw)				adimensional	Número	
+
+Saidas:
+● Variação do coeficiente de momento direcional		[1/grau]	Número 
+  em torno do CG gerado pelo conjunto
+  asa-fuselagem (C_nbetawf)
+● Variação do coeficiente de momento direcional		[1/grau]	Número 
+  em torno do CG gerado pela superfície
+  vertical da empenagem (C_nbetav)
+● Variação do coeficiente de momento direcional		[1/grau]	Número 
+  em torno do CG (C_nbeta)
+● Gráfico Coeficiente de momento direcional 		adimensional	Gráfico
+  em torno do CG  x ângulo de derrapagem (CMf)
+
+CUIDADOS:
+Cuidado com o sistema de unidades.
+
+%=======================================================================================================================================%
+Lateral.m
+
+Descrição:
+Destinado ao cálculo da estabilidade lateral estática.
+
+Entradas necessárias:
+
+● Angulo de diedro da asa (Gamma)			[grau]		Número	
+● Coeficiente angular da curva CL x alpha da asa (a)	[1/grau]	Número
+● Áre da asa (Sw)					[m^2]		Número
+● Envergadura da asa (b)				[m]		Número	
+● Largura média da fuselagem (wf)			[m]		Número	
+● Área da asa (Sw)					[m^2]		Número
+● Envergadura da asa (b)				[m]		Número	
+
+O usuário deverá escolher a geometria da asa analisada, tendo as seguintes opções:
+
+● Trapezoidal 
+● Elíptica
+● Retangular
+
+Caso a escolha for "Retangular", nenhum parâmetro adicional será pedido, porém se a geometria for elíptica
+ou trapezoidal, o usuário deverá  inserir tais parâmetros (estes são partes de uma soma de Riemann):
+
+● Corda do perfil na estação desejada ao longo 		[m]		Lista
+  da semi-envergadura (c(y))
+● Posição das cordas inseridas ao longo			[m]		Lista
+  da semi-envergadura (y)
+● Incremento da posição das contadas (Delta y)		[m]		Lista
+
+Saidas:
+● Coeficiente de momento lateral em torno do CG		[grau ^ (-1)]	Número 
+  gerado pelo ângulo de diedro da asa (Clbeta)
+● Gráfico Coeficiente de momento lateral		adimensional	Gráfico
+  em torno do CG x ângulo de rolamento (Cl)
+
+CUIDADOS:
+Verifique a separação dos elementos da lista.
+Cuidado com o sistema de unidades.
+Verifique o desenho de referência da asa.
+Cuidado com a quantidade de números de cada lista.
+
+%=======================================================================================================================================%
+Lateral.m
+
+Descrição:
+Destinado ao cálculo da estabilidade longitudinal estática.
+
+Entradas necessárias:
+
+O programa irá chamar os outros programas, caso o usuário deseje:
+
+● ContAsa.m
+● ContEmpenagem.m
+● ContFuselagem.m
+
+Tais entradas serão requisitadas, dependendo de quais programas não forem chamados:
+
+● Coeficiente de momento em torno do CG gerado		[grau ^ (-1)]	Número 
+  pela fuselagem a ângulo de ataque 0 (CM0f)
+● Variação do coeficiente de momento em torno do	adimensional	Número 
+  CG gerado pela fuselagem de acordo com ângulo de
+  ataque (CMalphaf) 
+● Coeficiente de momento em torno do CG gerado		[1 / grau]	Número 
+  pela asa a ângulo de ataque 0 (CM0w)
+● Variação do coeficiente de momento em torno do	adimensional	Número 
+  CG gerado pela asa de acordo com ângulo de
+  ataque (CMalphaw) 
+● Coeficiente de momento em torno do CG gerado		[1 / grau]	Número 
+  pela empenagem a ângulo de ataque 0 (CM0t)
+● Variação do coeficiente de momento em torno do	adimensional	Número 
+  CG gerado pela empenagem de acordo com ângulo de
+  ataque (CMalphat)
+
+Se o usuário inseriu algum dos outros dados acima e deseja calcular o ponto neutro
+e a margem de estática da aeronave, serão requisitados:
+
+● Corda media da asa (c)				[m]		Número 
+● Distancia entre o centro aerodinamico da asa e 	[m]		Número 
+  bordo de ataque (hac)
+● Distancia entre o centro de gravidade e		[m]		Número 
+  o bordo de ataque (hcg)
+● Coeficiente angular da curva Cl x alfa da asa (aw)	[1 / grau]	Número 
+● Volume de cauda horizontal (Vh)			adimensional	Número 
+● Eficiencia da cauda horizontal (eta)			adimensional	Número 
+● Coeficiente angular da curva Cl x alfa do		[1 / grau]	Número 
+  estabilizador (at)
+● Variação do vento relativo de acordo			[1 / grau]	Número 
+  com ângulo de ataque (EpsilonAlpha)
+
+
+Saidas:
+● Variação do coeficiente de momento longitudinal	[1 / grau]	Número 
+  em torno do CG gerado (CMalpha)
+● Coeficiente de momento longitudinal em torno do 	adimensional	Número 
+  CG a ângulo de ataque 0 (CM0)
+● Gráfico Coeficiente de momento longitudinal		adimensional	Gráfico
+  em torno do CG x ângulo de ataque (CM)
+● Posição do ponto neutro (hpn)				[m]		Número 
+● Valor da margem estática (ME)				adimensional	Número 
+
+CUIDADOS:
+Verifique a separação dos elementos da lista.
+Cuidado com o sistema de unidades.
+Verifique o desenho de referência da asa.
+Cuidado com a quantidade de números de cada lista.
+Caso ocorra erro ao rodar o programa, tente executa-lo clicando com o botão direito do 
+mouse no navegador de arquivos do Octave e então clique em "Executar".

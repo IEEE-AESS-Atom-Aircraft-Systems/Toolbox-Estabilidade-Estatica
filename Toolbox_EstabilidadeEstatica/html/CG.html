@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Posição Centro de gravidade</title>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
+  TeX: { equationNumbers: { autoNumber: 'all' } }
+});
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<style>
+body > * {
+  max-width: 42em;
+}
+body {
+  font-family: "Roboto Condensed", sans-serif;
+  padding-left: 7.5em;
+  padding-right: 7.5em;
+}
+pre, code {
+  max-width: 50em;
+  font-family: monospace;
+}
+pre.oct-code {
+  border: 1px solid Grey;
+  padding: 5px;
+}
+pre.oct-code-output {
+  margin-left: 2em;
+}
+span.comment {
+  color: ForestGreen;
+}
+span.keyword {
+  color: Blue;
+}
+span.string {
+  color: DarkOrchid;
+}
+footer {
+  margin-top: 2em;
+  font-size: 80%;
+}
+a, a:visited {
+  color: Blue;
+}
+h2 {
+  font-family: "Roboto Condensed", serif;
+  margin-top: 1.5em;
+}
+h2 a, h2 a:visited {
+  color: Black;
+}
+</style>
+
+</head>
+<body>
+<h1>Posição Centro de gravidade</h1>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#node1">Dados fornecidos na entrada</a></li>
+<li><a href="#node2">Cálculo da posição do CG</a></li>
+<li><a href="#node3">Cálculo da porcentagem do CG</a></li>
+<li><a href="#node4">Exibindo o resultado</a></li>
+</ul>
+
+<p>Tal código se propõe a descobrir a posição do centro de gravidade e também, sua porcentagem em relação à corda média da asa .</p>
+<h2><a id="node1">Dados fornecidos na entrada</a></h2>
+<pre class="oct-code"><span class="comment">#   %Dados fornecidos</span>
+<span class="comment">#   c = str2num (dims{1}); %corda média (metros)</span>
+<span class="comment">#   ba = str2num (dims{2}); %bordo de ataque (metros)</span>
+<span class="comment">#   P = str2num (dims{3}); %Pesos dos componentes (Newtons)</span>
+<span class="comment">#   D = str2num (dims{4}); %Distância dos componentes (metros)</span>
+</pre>
+<h2><a id="node2">Cálculo da posição do CG</a></h2>
+<pre class="oct-code"><span class="comment">#   %Calculo da posição do CG</span>
+<span class="comment">#   Ptot = sum(P); %Peso total (Newtons)<span>
+<span class="comment">#   Xcg = sum(D .*P)/Ptot %Local do CG (metros)</span>
+</pre>
+<h2><a id="node3">Cálculo da porcentagem do CG</a></h2>
+<pre class="oct-code"><span class="comment">#   %Cálculo da porcentagem do CG</span>
+<span class="comment">#   porccg = (Xcg - ba) / c * 100</span>
+</pre>
+<h2><a id="node4">Exibindo o resultado</a></h2>
+<pre class="oct-code"><span class="comment">#   helpdlg (sprintf('Posição do centro de gravidade: </span>
+<span class="comment">#	  %.3f m.\nPercentual desta posição em relação a </span>
+<span class="comment">#	  corda media da asa: %.2f (/100) de c', ...</span>
+<span class="comment">#   Xcg, porccg),'CG')</span>
+</pre>
+
+<footer>
+<hr>
+<a href="https://www.octave.org">Published with GNU Octave 5.2.0</a>
+</footer>
+<!--
+##### SOURCE BEGIN #####
+## Posição Centro de gravidade
+
+##
+# Tal código se propõe a descobrir a posição do centro de gravidade e também, 
+# sua porcentagem em relação à corda média da asa.
+
+## Dados fornecidos na entrada 
+
+#   %Dados fornecidos
+#   c = str2num (dims{1}); %corda média (metros)
+#   ba = str2num (dims{2}); %bordo de ataque (metros)
+#   P = str2num (dims{3}); %Pesos dos componentes (Newtons)
+#   D = str2num (dims{4}); %Distância dos componentes (metros)
+
+## Cálculo da posição do CG
+
+#   %Calculo da posição do CG
+#   Ptot = sum(P); %Peso total (Newtons)<span>
+#   Xcg = sum(D .*P)/Ptot %Local do CG (metros)</span>
+
+## Cálculo da porcentagem do CG
+
+#   %Cálculo da porcentagem do CG
+#   porccg = (Xcg - ba) / c * 100
+
+## Exibindo o resultado
+
+#	helpdlg (sprintf('Posição do centro de gravidade:
+#	%.3f m.\nPercentual desta posição em relação a
+#	corda media da asa: %.2f (/100) de c', ...
+#   Xcg, porccg),'CG')
+##### SOURCE END #####
+-->
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Estabilidade lateral estática</title>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
+  TeX: { equationNumbers: { autoNumber: 'all' } }
+});
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<style>
+body > * {
+  max-width: 42em;
+}
+body {
+  font-family: "Roboto Condensed", sans-serif;
+  padding-left: 7.5em;
+  padding-right: 7.5em;
+}
+pre, code {
+  max-width: 50em;
+  font-family: monospace;
+}
+pre.oct-code {
+  border: 1px solid Grey;
+  padding: 5px;
+}
+pre.oct-code-output {
+  margin-left: 2em;
+}
+span.comment {
+  color: ForestGreen;
+}
+span.keyword {
+  color: Blue;
+}
+span.string {
+  color: DarkOrchid;
+}
+footer {
+  margin-top: 2em;
+  font-size: 80%;
+}
+a, a:visited {
+  color: Blue;
+}
+h2 {
+  font-family: "Roboto Condensed", serif;
+  margin-top: 1.5em;
+}
+h2 a, h2 a:visited {
+  color: Black;
+}
+</style>
+
+</head>
+<body>
+<h1> Estabilidade lateral estática</h1>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#node1">Dados fornecidos na entrada</a></li>
+<li><a href="#node2">Decisão da geometria da asa</a></li>
+<li><a href="#node3">Dados necessários caso a geometria seja trapezoidal ou elíptica</a></li>
+<li><a href="#node4">Cálculo do Coeficiente de momento caso asa seja retangular</a></li>
+<li><a href="#node5">Cálculo do Coeficiente de momento caso asa seja trapezoidal ou elíptica </a></li>
+<li><a href="#node6">Exibindo os resultados </a></li>
+</ul>
+
+<p>A estabilidade lateral estática pode ser realizada pelo cálculo da variação do coeficiente de momento em torno do CG. Neste programa, tal variação será calculada pela contribuição do ângulo de diêdro da asa, por isso, será necessário descrever a geometria da asa.<p>
+
+<h2><a id="node1">Dados fornecidos na entrada</a></h2>
+<pre class="oct-code"><span class="comment">#   Gamma = str2num (dims{1}) ; %Angulo de diedro da asa</span>
+<span class="comment">#   a = str2num (dims{2}); %coeficiente angular da curva CL x alpha da asa</span>
+<span class="comment">#   S_w = str2num (dims{3}); %Area da asa</span>
+<span class="comment">#   b = str2num (dims{4}); %envergadura da asa</span>
+</pre>
+<h2><a id="node2">Decisão da geometria da asa</a></h2>
+<pre class="oct-code"><span class="comment">#   mensagem = {'Selecione o tipo de asa da aeronave'};</span>
+<span class="comment">#   tipo_asa = {'Trapezoidal','Eli­ptica','Retangular'};</span>
+<span class="comment">#   [indx,tf] = listdlg('PromptString',mensagem,'ListSize',[200</span>
+<span class="comment">#   50],'ListString',tipo_asa,'SelectionMode','single');</span>
+</pre>
+<h2><a id="node3">Dados necessários caso a geometria seja trapezoidal ou elíptica</a></h2>
+<pre class="oct-code"><span class="comment">#   c_y = str2num (dims_asa{1}) ;</span>
+<span class="comment">#   y = str2num (dims_asa{2});</span>
+<span class="comment">#   Deltay = str2num(dims_asa{3});</span>
+</pre>
+<h2><a id="node4">Cálculo do Coeficiente de momento caso asa seja retangular</a></h2>
+<pre class="oct-code"><span class="comment">#   Clbeta = (-Gamma * a) / 4</span> 
+</pre>
+<h2><a id="node5">Cálculo do Coeficiente de momento caso asa seja trapezoidal ou elíptica</a></h2>
+<pre class="oct-code"><span class="comment">#   somatorio = 0;</span> 
+<span class="comment">#   for i = 1:1:length(y)</span> 
+<span class="comment">#   somatorio += c_y(i) * y(i) * Deltay(i);</span> 
+<span class="comment">#   endfor</span> 
+<span class="comment">#      </span> 
+<span class="comment">#   Clbeta = (-2 * Gamma * a) / (S_w * b) * somatorio</span> 
+</pre>
+<h2><a id="node6">Exibindo os resultados</a></h2>
+<pre class="oct-code"><span class="comment">#   helpdlg (sprintf('A contribuicao do angulo de diedro na</span>
+<span class="comment">#   estabilidade lateral e de %.5f\n',Clbeta),...</span> 
+<span class="comment">#   "Contribuicao do angulo de diedro");</span> 
+<span class="comment">#   plot([-pi:pi],Clbeta .* [-pi:pi],'r-','Linewidth',3)</span> 
+<span class="comment">#   if (Clbeta < 0)</span> 
+<span class="comment">#     helpdlg (sprintf('A aeronave esta lateralmente estavel'),</span> 
+<span class="comment">#     "Analise de resultado")</span> 
+<span class="comment">#     legend('C_{l\beta}<0')</span> 
+<span class="comment">#   else</span> 
+<span class="comment">#     helpdlg (sprintf('A aeronave nao está lateralmente estavel'),</span> 
+<span class="comment">#     "Analise de resultado")</span> 
+<span class="comment">#     legend('C_{l\beta}>0')</span> 
+<span class="comment">#   endif</span> 
+<span class="comment">#   grid on</span> 
+<span class="comment">#   xlabel('Angulo de inclinação (\beta) (grau)');</span> 
+<span class="comment">#   ylabel('Coeficiente de momento angular lateral (C_{l})');</span> 
+<span class="comment">#   title('Contribuicao do angulo de diedro na estabilidade lateral')</span> 
+</pre>
+<footer>
+<hr>
+<a href="https://www.octave.org">Published with GNU Octave 5.2.0</a>
+</footer>
+<!--
+##### SOURCE BEGIN #####
+## Estabilidade lateral estática
+
+##
+# A estabilidade lateral estática pode ser realizada pelo cálculo da variação do coeficiente de momento em # torno do CG. Neste programa, tal variação será calculada pela contribuição do ângulo de diêdro da asa,   # por isso, será necessário descrever a geometria da asa.
+
+## Dados fornecidos na entrada
+
+#   Gamma = str2num (dims{1}) ; %Angulo de diedro da asa
+#   a = str2num (dims{2}); %coeficiente angular da curva CL x alpha da asa
+#   S_w = str2num (dims{3}); %Area da asa
+#   b = str2num (dims{4}); %envergadura da asa
+
+## Decisão da geometria da asa
+
+#   mensagem = {'Selecione o tipo de asa da aeronave'};
+#   tipo_asa = {'Trapezoidal','Eli­ptica','Retangular'};
+#   [indx,tf] = listdlg('PromptString',mensagem,'ListSize',[200
+#   50],'ListString',tipo_asa,'SelectionMode','single');
+
+## Dados necessários caso a geometria seja trapezoidal ou elíptica
+
+#   c_y = str2num (dims_asa{1}) ;
+#   y = str2num (dims_asa{2});
+#   Deltay = str2num(dims_asa{3});
+
+## Cálculo do Coeficiente de momento caso asa seja retangular
+
+#   Clbeta = (-Gamma * a) / 4 
+
+## Cálculo do Coeficiente de momento caso asa seja trapezoidal ou elíptica
+
+#   somatorio = 0; 
+#   for i = 1:1:length(y) 
+#   somatorio += c_y(i) * y(i) * Deltay(i); 
+#   endfor 
+#       
+#   Clbeta = (-2 * Gamma * a) / (S_w * b) * somatorio 
+
+## Exibindo os resultados
+
+#   helpdlg (sprintf('A contribuicao do angulo de diedro na
+#   estabilidade lateral e de %.5f\n',Clbeta),... 
+#   "Contribuicao do angulo de diedro"); 
+#   plot([-pi:pi],Clbeta .* [-pi:pi],'r-','Linewidth',3) 
+#   if (Clbeta < 0) 
+#     helpdlg (sprintf('A aeronave esta lateralmente estavel'), 
+#     "Analise de resultado") 
+#     legend('C_{l\beta}<0') 
+#   else 
+#     helpdlg (sprintf('A aeronave nao está lateralmente estavel'), 
+#     "Analise de resultado") 
+#     legend('C_{l\beta}>0') 
+#   endif 
+#   grid on 
+#   xlabel('Angulo de inclinação (\beta) (grau)'); 
+#   ylabel('Coeficiente de momento angular lateral (C_{l})'); 
+#   title('Contribuicao do angulo de diedro na estabilidade lateral') 
+##### SOURCE END #####
+-->
+</body>
+</html>

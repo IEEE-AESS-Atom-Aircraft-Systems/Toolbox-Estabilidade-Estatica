@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Contribuição da asa para estabilidade longitudinal estática</title>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
+  TeX: { equationNumbers: { autoNumber: 'all' } }
+});
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<style>
+body > * {
+  max-width: 42em;
+}
+body {
+  font-family: "Roboto Condensed", sans-serif;
+  padding-left: 7.5em;
+  padding-right: 7.5em;
+}
+pre, code {
+  max-width: 50em;
+  font-family: monospace;
+}
+pre.oct-code {
+  border: 1px solid Grey;
+  padding: 5px;
+}
+pre.oct-code-output {
+  margin-left: 2em;
+}
+span.comment {
+  color: ForestGreen;
+}
+span.keyword {
+  color: Blue;
+}
+span.string {
+  color: DarkOrchid;
+}
+footer {
+  margin-top: 2em;
+  font-size: 80%;
+}
+a, a:visited {
+  color: Blue;
+}
+h2 {
+  font-family: "Roboto Condensed", serif;
+  margin-top: 1.5em;
+}
+h2 a, h2 a:visited {
+  color: Black;
+}
+</style>
+
+</head>
+<body>
+<h1>Contribuição da asa para estabilidade longitudinal estática</h1>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#node1">Dados fornecidos na entrada</a></li>
+<li><a href="#node2">Cálculo do coeficiente de sustentacao para ângulo de ataque nulo</a></li>
+<li><a href="#node3">Cáculo dos coeficientes de momento</a></li>
+<li><a href="#node4">Exibindo o resultado</a></li>
+</ul>
+
+<p>A contribuição da asa para a estabilidade longitudinal estática pode ser realizada pelo cálculo de seus
+coeficientes de momento, tanto CM0, o coeficiente de momento para ângulo de ataque nulo quanto o coeficiente angular ca curva da variação de coeficiente de momento pelo ângulo de ataque.</p>
+<h2><a id="node1">Dados fornecidos na entrada</a></h2>
+<pre class="oct-code"><span class="comment">#   AR = str2num (dims{1}); %Razao de aspecto</span> 
+<span class="comment">#   e = str2num (dims{2}); %fator de eficiencia da envergadura</span> 
+<span class="comment">#   a0w = str2num (dims{3}); %coeficiente angular da curva cl </span>
+<span class="comment">#   por alfa do perfil da asa(/grau)</span>
+<span class="comment">#   c = str2num (dims{4}); %corda media da asa (m)</span>
+<span class="comment">#   hcg = str2num (dims{5}); %dist cg e bordo de ataque (m)</span>
+<span class="comment">#   hac = str2num (dims{6}); %dist centro aerodinamico e bordo de ataque (m)</span>
+<span class="comment">#   alpha0 = str2num (dims{7}); %angulo de ataque para sustentacao nula (grau)</span>
+<span class="comment">#   CMac = str2num (dims{8}); %Coeficiente de momento em torno do centro</span> 
+<span class="comment">#   aerodinamico a angulo de ataque nulo</span> 
+<span class="comment">#   alpha = str2num (dims{9}); %Valores de possiveis angulos de ataque</span>
+</pre>
+<h2><a id="node2">Cálculo do coeficiente de sustentacao para angulo de ataque nulo</a></h2>
+<pre class="oct-code"><span class="comment">#   aw = a0w / (1 + (57.3 * a0w) / (pi * e * AR)); </span>
+<span class="comment">#   %coeficiente angular da curva cl por alfa da asa (/grau) </span>
+<span class="comment">#   Cl0 = aw * (0 - alpha0); %Coeficiente de sustentacao para </span>
+<span class="comment">#   angulo de ataque nulo </span> 
+</pre>
+<h2><a id="node3">Cálculo dos coeficientes de momento</a></h2>
+<pre class="oct-code"><span class="comment">#   CM0w = CMac + (Cl0 * ((hcg/c) - (hac/c)))</span> 
+<span class="comment">#   %Coeficiente de momento em torno do cg para angulo de ataque nulo</span>
+<span class="comment">#   CMalphaw = aw * ((hcg/c)-(hac/c)) %Coeficiente angular da curva de </span>
+<span class="comment">#   coeficiente de momento em torno do cg</span>
+<span class="comment">#   CMCGw = CM0w .+ CMalphaw .* alpha; %Variacao do coeficiente de momento em </span>
+<span class="comment">#   torno do cg em funcao do angulo de ataque</span>
+</pre>
+<h2><a id="node4">Exibindo o resultado</a></h2>
+<pre class="oct-code"><span class="comment">#   %GERANDO O GRAFICO</span>
+<span class="comment">#   figure(1)</span>
+<span class="comment">#   plot(alpha,CMCGw,'LineWidth',2,"r")</span>
+<span class="comment">#   xlabel('Angulo de ataque (\deg)')</span>
+<span class="comment">#   ylabel('Coeficiente de momento em torno do CG') </span>
+<span class="comment">#   title('Contribuição da asa na estabilidade longitudinal estatica')</span>
+<span class="comment">#   grid on </span>
+<span class="comment">#   axis on </span>
+</pre>
+
+<footer>
+<hr>
+<a href="https://www.octave.org">Published with GNU Octave 5.2.0</a>
+</footer>
+<!--
+##### SOURCE BEGIN #####
+## Contribuição da asa para estabilidade longitudinal estática
+
+##
+# A contribuição da asa para a estabilidade longitudinal estática pode ser realizada pelo cálculo de seus
+# coeficientes de momento, tanto CM0, o coeficiente de momento para ângulo de ataque nulo quanto o 
+# coeficiente angular ca curva da variação de coeficiente de momento pelo ângulo de ataque.
+
+## Dados fornecidos na entrada
+
+#   AR = str2num (dims{1}); %Razao de aspecto 
+#   e = str2num (dims{2}); %fator de eficiencia da envergadura 
+#   a0w = str2num (dims{3}); %coeficiente angular da curva cl por alfa do perfil da asa(/grau)
+#   c = str2num (dims{4}); %corda media da asa (m)
+#   hcg = str2num (dims{5}); %dist cg e bordo de ataque (m)
+#   hac = str2num (dims{6}); %dist centro aerodinamico e bordo de ataque (m)
+#   alpha0 = str2num (dims{7}); %angulo de ataque para sustentacao nula (grau)
+#   CMac = str2num (dims{8}); %Coeficiente de momento em torno do centro 
+#   aerodinamico a angulo de ataque nulo 
+#   alpha = str2num (dims{9}); %Valores de possiveis angulos de ataque
+
+## Cálculo do coeficiente de sustentacao para angulo de ataque nulo
+
+#   aw = a0w / (1 + (57.3 * a0w) / (pi * e * AR));
+#   %coeficiente angular da curva cl por alfa da asa (/grau) 
+#   Cl0 = aw * (0 - alpha0); %Coeficiente de sustentacao para 
+#   angulo de ataque nulo 
+
+## Cálculo dos coeficientes de momento
+
+#   CM0w = CMac + (Cl0 * ((hcg/c) - (hac/c)))
+#   %Coeficiente de momento em torno do cg para angulo de ataque nulo
+#   CMalphaw = aw * ((hcg/c)-(hac/c)) %Coeficiente angular da curva de 
+#   coeficiente de momento em torno do cg
+#   CMCGw = CM0w .+ CMalphaw .* alpha; %Variacao do coeficiente de momento em
+#   torno do cg em funcao do angulo de ataque
+
+## Exibindo o resultado
+
+#   %GERANDO O GRAFICO
+#   figure(1)
+#   plot(alpha,CMCGw,'LineWidth',2,"r")
+#   xlabel('Angulo de ataque (\deg)')
+#   ylabel('Coeficiente de momento em torno do CG')
+#   title('Contribuição da asa na estabilidade longitudinal estatica')
+#   grid on 
+#   axis on 
+##### SOURCE END #####
+-->
+</body>
+</html>

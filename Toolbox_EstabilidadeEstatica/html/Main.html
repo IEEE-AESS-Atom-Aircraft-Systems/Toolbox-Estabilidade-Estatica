@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Main</title>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
+  TeX: { equationNumbers: { autoNumber: 'all' } }
+});
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<style>
+body > * {
+  max-width: 42em;
+}
+body {
+  font-family: "Roboto Condensed", sans-serif;
+  padding-left: 7.5em;
+  padding-right: 7.5em;
+}
+pre, code {
+  max-width: 50em;
+  font-family: monospace;
+}
+pre.oct-code {
+  border: 1px solid Grey;
+  padding: 5px;
+}
+pre.oct-code-output {
+  margin-left: 2em;
+}
+span.comment {
+  color: ForestGreen;
+}
+span.keyword {
+  color: Blue;
+}
+span.string {
+  color: DarkOrchid;
+}
+footer {
+  margin-top: 2em;
+  font-size: 80%;
+}
+a, a:visited {
+  color: Blue;
+}
+h2 {
+  font-family: "Roboto Condensed", serif;
+  margin-top: 1.5em;
+}
+h2 a, h2 a:visited {
+  color: Black;
+}
+</style>
+
+</head>
+<body>
+<h1> Main</h1>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#node1">Limpeza de dados prévios</a></li>
+<li><a href="#node2">Escolha do diretório</a></li>
+<li><a href="#node3">Seleção de programa</a></li>
+<li><a href="#node4">Mensagens de erros possíveis</a></li>
+</ul>
+
+<p>Estrutura de seleção de códigos da Toolbox, basta executá-lo para abrir a guia de seleção de programas da Toolbox.<p>
+
+<h2><a id="node1">Limpeza de dados prévios</a></h2>
+<pre class="oct-code"><span class="comment">#   clear all</span>
+<span class="comment">#   close all </span>
+<span class="comment">#   clc</span>
+</pre>
+<h2><a id="node2">Escolha do diretório</a></h2>
+<pre class="oct-code"><span class="comment">#   d = dir;</span>
+<span class="comment">#   nome_codigo = {d.name};</span>
+</pre>
+<h2><a id="node3">Seleção de programa</a></h2>
+<pre class="oct-code"><span class="comment">#   [indx,tf] = listdlg('PromptString',{'Selecione qual programa relacionado </span> 
+<span class="comment">#   a estabilidade estatica deseja analizar.',...</span> 
+<span class="comment">#       'Selecione somente um código.',''},...</span> 
+<span class="comment">#       'ListSize',[300 250],'SelectionMode','single','ListString',nome_codigo);</span> 
+<span class="comment">#   </span> 
+<span class="comment">#   if sum(indx == 3)>0</span> 
+<span class="comment">#       CG</span> 
+<span class="comment">#   elseif sum(indx == 4)>0</span> 
+<span class="comment">#       ContAsa</span> 
+<span class="comment">#   elseif sum(indx == 5)>0</span> 
+<span class="comment">#       ContEmpenagem</span> 
+<span class="comment">#   elseif sum(indx == 6)>0</span> 
+<span class="comment">#        ContFuselagem</span> 
+<span class="comment">#   elseif sum(indx == 7)>0</span> 
+<span class="comment">#       Direcional</span> 
+<span class="comment">#   elseif sum(indx == 8)>0</span> 
+<span class="comment">#   	  Lateral</span> 
+<span class="comment">#   elseif sum(indx == 9)>0</span> 
+<span class="comment">#       Longitudinal</span>
+</pre>
+<h2><a id="node4">Mensagens de erros possíveis</a></h2>
+<pre class="oct-code"><span class="comment">#   elseif sum(indx == 10)>0 || sum(indx == 13)>0</span>
+<span class="comment">#       opcoes = struct('WindowStyle','modal',... </span>
+<span class="comment">#                 'Interpreter','tex');</span>
+<span class="comment">#       f = warndlg('\color{black} Escolha um código válido',...</span>
+<span class="comment">#                'UAV Stability Toolbox', opcoes);</span>
+<span class="comment">#   else</span>
+<span class="comment">#       opcoes = struct('WindowStyle','modal',... </span>
+<span class="comment">#                 'Interpreter','tex');</span>
+<span class="comment">#       f = warndlg('\color{black} Selecione um código',...</span>
+<span class="comment">#                'UAV Stability Toolbox', opcoes);</span>
+<span class="comment">#   end</span>
+</pre>
+<footer>
+<hr>
+<a href="https://www.octave.org">Published with GNU Octave 5.2.0</a>
+</footer>
+<!--
+##### SOURCE BEGIN #####
+## Main
+
+##
+# Estrutura de seleção de códigos da Toolbox, basta executá-lo para abrir a guia de seleção de programas 
+# da Toolbox.
+
+
+
+## Limpeza de dados prévios
+
+#   clear all
+#   close all 
+#   clc
+
+## Escolha do diretório
+
+#   d = dir;
+#   nome_codigo = {d.name};
+
+## Seleção de programa
+
+#   [indx,tf] = listdlg('PromptString',{'Selecione qual programa relacionado  
+#   a estabilidade estatica deseja analizar.',... 
+#       'Selecione somente um código.',''},... 
+#       'ListSize',[300 250],'SelectionMode','single','ListString',nome_codigo); 
+#    
+#   if sum(indx == 3)>0 
+#       CG 
+#   elseif sum(indx == 4)>0 
+#       ContAsa 
+#   elseif sum(indx == 5)>0 
+#       ContEmpenagem 
+#   elseif sum(indx == 6)>0 
+#        ContFuselagem 
+#   elseif sum(indx == 7)>0 
+#       Direcional 
+#   elseif sum(indx == 8)>0 
+#   	  Lateral 
+#   elseif sum(indx == 9)>0 
+#       Longitudinal
+
+## Mensagens de erros possíveis
+
+#   elseif sum(indx == 10)>0 || sum(indx == 13)>0
+#       opcoes = struct('WindowStyle','modal',... 
+#                 'Interpreter','tex');
+#       f = warndlg('\color{black} Escolha um código válido',...
+#                'UAV Stability Toolbox', opcoes);
+#   else
+#       opcoes = struct('WindowStyle','modal',... 
+#                 'Interpreter','tex');
+#       f = warndlg('\color{black} Selecione um código',...
+#                'UAV Stability Toolbox', opcoes);
+#   end
+##### SOURCE END #####
+-->
+</body>
+</html>
